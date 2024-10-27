@@ -1,0 +1,204 @@
+// second code: https://www.programiz.com/online-compiler/8EGVohL0VkaCQ
+// python : https://www.programiz.com/online-compiler/8apCv10aleh0f
+
+
+/* Intreview Question
+
+# Online Python compiler (interpreter) to run Python online.
+# Write Python 3 code in this online editor and run it.
+t = [4,1,7,4]
+def calc(t):
+    k = 0
+    for i in range(len(t)-1):
+        k += (t[i]-t[i+1])**2
+    
+    return k
+    
+
+where_big = t.index(max(t))
+a = t.copy()
+b = t.copy()
+min_cost = calc(t)
+for num in range(min(t),max(t)+1):
+    a.insert(where_big, num)
+    b.insert(where_big+1, num)
+    
+
+    if calc(a) > calc(b) and min_cost > calc(b):
+        min_cost = calc(b)
+    elif calc(a) < calc(b) and min_cost > calc(a):
+        min_cost = calc(a)
+        
+    a.pop(where_big)
+    b.pop(where_big+1)
+
+print(min_cost)
+    
+
+https://www.programiz.com/online-compiler/5ABNkVtl3sVNQ
+*/
+
+
+
+
+#include <stdio.h>
+
+int main() {
+    int numbers[] = {8, 7, 6, 3, 2};  // Scoring plays: TD + 2pt (8), TD + FG (7), TD (6), FG (3), Safety (2)
+    int target;  // Variable to hold user input
+    int count[5];  // Array to keep track of counts of each number
+
+    while (1) {
+        printf("Enter the NFL score (0 or 1 to STOP): ");
+        scanf("%d", &target);
+
+        // Check for stop condition
+        if (target <= 1) {
+            break;
+        }
+
+        printf("Possible combinations of scoring plays if a teams score is %d:\n", target);
+        
+        // Nested loops for each scoring play 
+        for (count[0] = 0; count[0] <= target / numbers[0]; count[0]++) { // TD + 2pt condition is controlling how many of that paricualr score we can count while being equal or less than the target
+            for (count[1] = 0; count[1] <= target / numbers[1]; count[1]++) { // TD + FG
+                for (count[2] = 0; count[2] <= target / numbers[2]; count[2]++) { // TD
+                    for (count[3] = 0; count[3] <= target / numbers[3]; count[3]++) { // FG
+                        for (count[4] = 0; count[4] <= target / numbers[4]; count[4]++) { // Safety
+                            // Calculate the sum of the selected combination
+                            int sum = count[0] * numbers[0] + count[1] * numbers[1] + count[2] * numbers[2] + count[3] * numbers[3] + count[4] * numbers[4];
+
+                            // Check if the sum equals to the target
+                            if (sum == target) {
+                                // Print the combination in the desired format
+                                printf("%d TD + 2pt, %d TD + FG, %d TD, %d 3pt FG, %d Safety",count[0],count[1],count[2],count[3],count[4]);
+                                printf("\n");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return 0;
+}
+
+
+#include <stdio.h>
+#include <ctype.h>
+
+float convert(float temp, int main_scale, int convert_to_scale) {
+    float converted = 0;
+
+    // Check for invalid inputs
+    if ((main_scale == 3 && temp < 0)) { // Kelvin check
+        printf("Invalid temperature: Kelvin cannot be negative.\n");
+        return -1; // Indicate an error
+    }
+
+    if (main_scale == 2) { // Fahrenheit
+        if (convert_to_scale == 1) { // if main scale is to Celsius
+            converted = (temp - 32) * (5.0 / 9.0);
+        } else if (convert_to_scale == 3) { // to Kelvin
+            converted = (temp - 32) * (5.0 / 9.0) + 273.15;
+        } else {
+            printf("The requested conversion is invalid\n");
+            return -1; // Indicate an error
+        }
+    } else if (main_scale == 1) { // if main scale is Celsius
+        if (convert_to_scale == 2) { // to Fahrenheit
+            converted = (temp * (9.0 / 5.0)) + 32;
+        } else if (convert_to_scale == 3) { // to Kelvin
+            converted = temp + 273.15;
+        } else {
+            printf("The requested conversion is invalid\n");
+            return -1; // Indicate an error
+        }
+    } else if (main_scale == 3) { // if main scale is Kelvin
+        if (convert_to_scale == 2) { // to Fahrenheit
+            converted = (temp - 273.15) * (9.0 / 5.0) + 32;
+        } else if (convert_to_scale == 1) { // to Celsius
+            converted = temp - 273.15;
+        } else {
+            printf("The requested conversion is invalid\n");
+            return -1; // Indicate an error
+        }
+    }
+
+    return converted;
+}
+
+void advise(float temp, int main_scale) {
+    float cel = temp;
+    if (main_scale != 1) { // if main scale was not in Celsius
+        cel = convert(temp, main_scale, 1); // converted into Celcius
+        if (cel == -1) return; // Check for conversion error
+    }
+    // Give forecast and advising accordingly
+    if (cel < 0) {
+        printf("It is Freezing\nIt's too risky to drive.\n");
+    } else if (cel < 11) {
+        printf("It is Cold\nMake sure to wear a jacket.\n");
+    } else if (cel < 26) {
+        printf("It is Comfortable\nPerfect temperature for a walk.\n");
+    } else if (cel < 36) {
+        printf("It is Hot\nStay hydrated.\n");
+    } else {
+        printf("Extreme Heat\nPlease stay inside.\n");
+    }
+}
+
+int main() {
+    float temp;
+    int main_scale, convert_to_scale;
+    float converted;
+
+    while (1) {
+        printf("Enter the temperature value: ");
+        scanf("%f", &temp);
+
+        // Input for main_scale with validation
+        while (1) {
+            printf("Choose the temperature scale of the input value (1: Celsius, 2: Fahrenheit, 3: Kelvin): ");
+            scanf("%d", &main_scale);
+            if (main_scale < 1 || main_scale > 3) { // if the input is not any of the given numbers for the main scale
+                printf("Invalid scale. Please enter 1, 2, or 3.\n");
+            } else {
+                break; // Valid scale entered
+            }
+        }
+
+        // Input for convert_to_scale with validation
+        while (1) {
+            printf("Choose the conversion target (1: Celsius, 2: Fahrenheit, 3: Kelvin): ");
+            scanf("%d", &convert_to_scale);
+            if (convert_to_scale < 1 || convert_to_scale > 3) { // if the input is not any of the given numbers for the converted scale
+                printf("Invalid scale. Please enter 1, 2, or 3.\n");
+            } else {
+                break; // Valid scale entered
+            }
+        }
+
+        converted = convert(temp, main_scale, convert_to_scale); // initiate the convert function
+        if (convert_to_scale == 3 && converted < 0){ // checks if the converted value to kelvin was negative and handles it
+            printf("Invalid temperature: Kelvin cannot be negative.\n");
+        }
+        else if (converted != -1) { // Check for conversion errors
+            if (convert_to_scale == 1){
+                printf("The converted value is: %.2f℃\n", converted);
+            }
+            else if (convert_to_scale == 2){
+                printf("The converted value is: %.2fF\n", converted);
+            }
+            else{
+                printf("The converted value is: %.2fK\n", converted);
+            }
+            advise(converted, convert_to_scale); // Advise based on converted temperature
+        } 
+    }
+
+    return 0;
+}
+
+
