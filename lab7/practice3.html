@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice 3 - Password Verfication </title>
+    <style>
+        input{
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Practice 3 - Password Verfication</h1>
+    <form id="form">
+        <label for="pass1">Enter Password</label>
+        <br>
+        <input type="password" id="pass1" required>
+        
+        <br><br>
+        
+        <label for="pass2">Repeat Password</label>
+        <br>
+        <input type="password" id="pass2" required>
+        
+        <br><br>
+
+        <button type="submit">Verify</button>
+    </form>
+
+
+    <script>
+        
+        
+        document.getElementById('form').addEventListener('submit', function(event){ event.preventDefault();
+            const pass1 = document.getElementById('pass1').value;
+            const pass2 = document.getElementById('pass2').value;
+            if (pass1.length < 8){
+                alert("Short Password - it must be at least 8 characters long");
+            }
+            else if (pass1 !== pass2){
+                alert("Repeated password does not match the main password");
+            }
+            else{
+                alert("Passwords match");
+            }
+        });
+    </script>
+</body>
+</html>
